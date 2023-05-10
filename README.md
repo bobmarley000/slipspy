@@ -536,3 +536,515 @@ increment the count variable each time a comparison is made. this modificatin wi
 to keep track of the number of comparisons made during the search.
 
 
+Assignment 2
+Set A
+a) Write a C program which uses Binary search tree library and displays nodes
+at each level. count of node at each level and total levels in the tree.
+Header File:
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct Node
+{
+int data;
+struct Node *left;
+struct Node *right;
+} Node;
+Node *createNode(int data)
+{
+Node *node = (Node *)malloc(sizeof(Node));
+node->data = data;
+node->left = NULL;
+node->right = NULL;
+return node;
+}
+Node *insert(Node *node, int data)
+{
+if (node == NULL)
+{
+return createNode(data);
+Assignment 2: Binary Tree applications
+}
+if (data < node->data)
+{
+node->left = insert(node->left, data);
+}
+else if (data > node->data)
+{
+node->right = insert(node->right, data);
+}
+return node;
+}
+void printLevel(Node *root, int level, int *count)
+{
+if (root == NULL)
+{
+return;
+}
+if (level == 1)
+{
+printf("%d ", root->data);
+(*count)++;
+}
+else if (level > 1)
+{
+printLevel(root->left, level - 1, count);
+printLevel(root->right, level - 1, count);
+}
+}
+void printLevels(Node *root)
+{
+int i, count;
+int height = 0;
+int level_counts[100] = {0};
+for (i = 1; i <= height + 1; i++)
+{
+count = 0;
+printLevel(root, i, &count);
+level_counts[i] = count;
+if (count > 0)
+{
+height = i;
+printf("\n");
+}
+}
+printf("Total levels: %d\n", height);
+printf("Node count per level: ");
+for (i = 1; i <= height; i++)
+{
+printf("%d ", level_counts[i]);
+}
+}
+Program:
+#include <stdio.h>
+#include <stdlib.h>
+#include "btree2.h"
+int main()
+{
+Node *root = NULL;
+root = insert(root, 50);
+insert(root, 30);
+insert(root, 20);
+insert(root, 40);
+insert(root, 70);
+insert(root, 60);
+insert(root, 80);
+printLevels(root);
+return 0;
+}
+Output:
+50
+30 70
+20 40 60 80
+Total levels: 3
+Node count per level: 1 2 4
+Set B
+a) Write a program to sort n randomly generated elements using Heapsort
+method.
+Program:
+#include <stdio.h>
+#include <stdlib.h>
+void heapify(int arr[], int n, int i) {
+int largest = i; // Initialize largest as root
+int l = 2*i + 1; // left = 2*i + 1
+int r = 2*i + 2; // right = 2*i + 2
+// If left child is larger than root
+if (l < n && arr[l] > arr[largest])
+largest = l;
+// If right child is larger than largest so far
+if (r < n && arr[r] > arr[largest])
+largest = r;
+// If largest is not root
+if (largest != i) {
+int temp = arr[i];
+arr[i] = arr[largest];
+arr[largest] = temp;
+// Recursively heapify the affected sub-tree
+heapify(arr, n, largest);
+}
+}
+void heapsort(int arr[], int n) {
+// Build heap (rearrange array)
+for (int i = n / 2 - 1; i >= 0; i--)
+heapify(arr, n, i);
+// One by one extract an element from heap
+for (int i = n - 1; i >= 0; i--) {
+// Move current root to end
+int temp = arr[0];
+arr[0] = arr[i];
+arr[i] = temp;
+// call max heapify on the reduced heap
+heapify(arr, i, 0);
+}
+}
+int main() {
+int n;
+printf("Enter the number of elements: ");
+scanf("%d", &n);
+int arr[n];
+printf("Enter %d elements: ", n);
+for (int i = 0; i < n; i++)
+scanf("%d", &arr[i]);
+heapsort(arr, n);
+printf("Sorted array: ");
+for (int i = 0; i < n; i++)
+printf("%d ", arr[i]);
+printf("\n");
+return 0;
+}
+Output:
+Enter the number of elements: 9
+Enter 9 elements: 15
+23
+26
+29
+34
+68
+12
+11
+10
+Sorted array: 10 11 12 15 23 26 29 34 68
+Set C
+a) Which data structure will be required to display nodes of BST depth wise?
+Program:
+#include <stdio.h>
+#include <stdlib.h>
+struct Node {
+int data;
+struct Node* left;
+struct Node* right;
+};
+// function to create a new node in BST
+struct Node* newNode(int data)
+{
+struct Node* node = (struct Node*)malloc(sizeof(struct
+Node));
+node->data = data;
+node->left = NULL;
+node->right = NULL;
+return node;
+}
+// function to display nodes of BST depth-wise
+void displayNodesDepthWise(struct Node* root)
+{
+// check if the BST is empty
+if (root == NULL) {
+return;
+}
+// create a queue and enqueue the root node
+struct Node** queue = (struct
+Node**)malloc(sizeof(struct Node*));
+int front = 0, rear = 0;
+queue[rear] = root;
+rear++;
+// loop through all the nodes in the queue
+while (front < rear) {
+// dequeue the next node from the front of the queue
+struct Node* node = queue[front];
+front++;
+// print the value of the dequeued node
+printf("%d ", node->data);
+// enqueue the left and right child of the dequeued
+node (if they exist)
+if (node->left != NULL) {
+queue = (struct Node**)realloc(queue, (rear + 1)
+* sizeof(struct Node*));
+queue[rear] = node->left;
+rear++;
+}
+if (node->right != NULL) {
+queue = (struct Node**)realloc(queue, (rear + 1)
+* sizeof(struct Node*));
+queue[rear] = node->right;
+rear++;
+}
+}
+// free the queue memory
+free(queue);
+}
+// driver code to test the implementation
+int main()
+{
+// create a sample BST
+struct Node* root = newNode(50);
+root->left = newNode(30);
+root->right = newNode(70);
+root->left->left = newNode(20);
+root->left->right = newNode(40);
+root->right->left = newNode(60);
+root->right->right = newNode(80);
+// display nodes of the BST depth-wise
+printf("Nodes of BST displayed depth-wise: ");
+displayNodesDepthWise(root);
+return 0;
+}
+Output:
+Nodes of BST displayed depth-wise: 50 30 70 20 40 60 80
+b) Write a C program to displays nodes of BST depth wise.
+Program:
+#include<stdio.h>
+#include<stdlib.h>
+// Definition of a BST node
+struct node
+{
+int data;
+struct node* left;
+struct node* right;
+};
+// Function to create a new BST node
+struct node* new_node(int data)
+{
+struct node* temp = (struct node*)malloc(sizeof(struct
+node));
+temp->data = data;
+temp->left = NULL;
+temp->right = NULL;
+return temp;
+}
+// Function to insert a new node in the BST
+struct node* insert(struct node* root, int data)
+{
+if(root == NULL)
+return new_node(data);
+if(data < root->data)
+root->left = insert(root->left, data);
+else if(data > root->data)
+root->right = insert(root->right, data);
+return root;
+}
+// Function to display the nodes of a BST depth-wise
+void display_nodes_depth_wise(struct node* root, int level)
+{
+if(root == NULL)
+return;
+if(level == 1)
+printf("%d ", root->data);
+else if(level > 1)
+{
+display_nodes_depth_wise(root->left, level-1);
+display_nodes_depth_wise(root->right, level-1);
+}
+}
+// Function to get the height of a BST
+int get_height(struct node* root)
+{
+if(root == NULL)
+return 0;
+int left_height = get_height(root->left);
+int right_height = get_height(root->right);
+return (left_height > right_height ? left_height :
+right_height) + 1;
+}
+// Main function
+int main()
+{
+struct node* root = NULL;
+root = insert(root, 50);
+insert(root, 30);
+insert(root, 20);
+insert(root, 40);
+insert(root, 70);
+insert(root, 60);
+insert(root, 80);
+int height = get_height(root);
+for(int level=1; level<=height; level++)
+{
+printf("Level %d: ", level);
+display_nodes_depth_wise(root, level);
+printf("\n");
+}
+return 0;
+}
+Output:
+Level 1: 50
+Level 2: 30 70
+Level 3: 20 40 60 80
+c) Write a C program to compare two binary search trees (node data wise
+comparison).
+Program:
+#include <stdio.h>
+#include <stdlib.h>
+// Structure of a node in the binary search tree
+struct node {
+int data;
+struct node* left;
+struct node* right;
+};
+// Function to create a new node with the given data
+struct node* newNode(int data) {
+struct node* node = (struct node*)malloc(sizeof(struct
+node));
+node->data = data;
+node->left = NULL;
+node->right = NULL;
+return node;
+}
+// Function to insert a new node with the given data in the
+binary search tree
+struct node* insert(struct node* node, int data) {
+if (node == NULL)
+return newNode(data);
+if (data < node->data)
+node->left = insert(node->left, data);
+else if (data > node->data)
+node->right = insert(node->right, data);
+return node;
+}
+// Function to compare two binary search trees node datawise
+int compareTrees(struct node* root1, struct node* root2) {
+// If both trees are empty, return true
+if (root1 == NULL && root2 == NULL)
+return 1;
+// If one tree is empty and the other is not, return
+false
+if (root1 == NULL || root2 == NULL)
+return 0;
+// Compare the data of the current nodes
+if (root1->data != root2->data)
+return 0;
+// Recursively compare the left and right subtrees
+return compareTrees(root1->left, root2->left) &&
+compareTrees(root1->right, root2->right);
+}
+// Driver program to test the above functions
+int main() {
+// Create the first binary search tree
+struct node* root1 = NULL;
+root1 = insert(root1, 50);
+insert(root1, 30);
+insert(root1, 20);
+insert(root1, 40);
+insert(root1, 70);
+insert(root1, 60);
+insert(root1, 80);
+// Create the second binary search tree
+struct node* root2 = NULL;
+root2 = insert(root2, 50);
+insert(root2, 30);
+insert(root2, 20);
+insert(root2, 90);
+insert(root2, 70);
+insert(root2, 60);
+insert(root2, 80);
+// Compare the two binary search trees
+if (compareTrees(root1, root2))
+printf("The two binary search trees are
+identical.\n");
+else
+printf("The two binary search trees are not
+identical.\n");
+return 0;
+}
+Output:
+The two binary search trees are not identical.
+d) How to implement mirror) and copy() functions without recursion?
+ANS:
+To implement mirror and copy functions in C language without recursion, you can use
+iterative approaches. Here are examples of how you can implement these functions:
+(1)Mirror Function:
+void mirror(TreeNode* root) {
+ if (root == NULL) {
+ return;
+ }
+
+ Queue q;
+ queue_init(&q);
+ queue_enqueue(&q, root);
+
+ while (!queue_is_empty(&q)) {
+ TreeNode* node = queue_dequeue(&q);
+
+ TreeNode* temp = node->left;
+ node->left = node->right;
+ node->right = temp;
+
+ if (node->left != NULL) {
+ queue_enqueue(&q, node->left);
+ }
+
+ if (node->right != NULL) {
+ queue_enqueue(&q, node->right);
+ }
+ }
+
+ queue_destroy(&q);
+}
+In this implementation, we use a queue to perform a level-order traversal of the
+binary tree. At each node, we swap its left and right child pointers. Then, we enqueue
+the left and right child pointers (if they exist) onto the queue. We continue this
+process until the queue is empty.
+(2)Copy Function:
+TreeNode* copy(TreeNode* root) {
+ if (root == NULL) {
+ return NULL;
+ }
+
+ Queue q;
+ queue_init(&q);
+ queue_enqueue(&q, root);
+
+ TreeNode* new_root = create_node(root->data);
+ Queue new_q;
+ queue_init(&new_q);
+ queue_enqueue(&new_q, new_root);
+
+ while (!queue_is_empty(&q)) {
+ TreeNode* node = queue_dequeue(&q);
+ TreeNode* new_node = queue_dequeue(&new_q);
+
+ if (node->left != NULL) {
+ TreeNode* new_left = create_node(node->left->data);
+ new_node->left = new_left;
+ queue_enqueue(&q, node->left);
+ queue_enqueue(&new_q, new_left);
+ }
+
+ if (node->right != NULL) {
+ TreeNode* new_right = create_node(node->right->data);
+ new_node->right = new_right;
+ queue_enqueue(&q, node->right);
+ queue_enqueue(&new_q, new_right);
+ }
+ }
+
+ queue_destroy(&q);
+ queue_destroy(&new_q);
+
+ return new_root;
+}
+In this implementation, we also use a queue to perform a level-order traversal of the
+binary tree. At each node, we create a new node with the same data and enqueue it
+onto a separate queue. We then enqueue the left and right child pointers (if they
+exist) onto the original queue and their corresponding new nodes onto the separate
+queue. We continue this process until the original queue is empty. Finally, we return
+the root of the new binary tree. Note that the create_node function creates a new
+node with the given data and NULL left and right child pointers.
+e) How to convert singly linked list to binary search tree?
+Program:
+#include <stdio.h>
+#include <stdlib.h>
+struct ListNode
+{
+int val;
+struct ListNode *next;
+};
+struct TreeNode
+{
+int val;
+struct TreeNode *left;
+struct TreeNode *right;
+};
+struct TreeNode *sortedArrayToBST(int *nums, int start, int
+end)
+{
+if (start > end)
+{
+return NULL;
+}
+int mid = (start + end) / 2;
+struct TreeNode *root = (struct TreeNode
+*)malloc(sizeof(struct TreeNode));
+root->val = nums[mid];
+root->left = sortedArrayToBST(nums, start, mid - 1);
+root->right = sortedArrayToBST(nums, mid + 1, end);
+return root;
+}
