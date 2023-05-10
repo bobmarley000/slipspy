@@ -1897,7 +1897,3 @@ edges
 D.Which data structure is used to implement adjacency matrix method?
 Ans: The data structure used to implement the adjacency matrix method is a
 two-dimensional array.
-
-
-
-Assignment 4
