@@ -1560,5 +1560,345 @@ return root;
 }
 
 
+Assignment 3
+Set A
+A . Write a C program that accepts the vertices and edges of a graph and
+stores it as an adjacency matrix. Display the adjacency matrix.
+Ans: program in C that accepts the number of vertices and edges of a graph,
+and stores it as an adjacency matrix. It then displays the adjacency matrix:
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_VERTICES 100
+int adjMatrix[MAX_VERTICES][MAX_VERTICES];
+int numVertices;
+// Initialize the graph with the given number of vertices
+void initGraph(int n) {
+int i, j;
+numVertices = n;
+for (i = 0; i < numVertices; i++) {
+for (j = 0; j < numVertices; j++) {
+adjMatrix[i][j] = 0;
+}
+}
+}
+// Add a directed edge from vertex i to vertex j
+void addEdge(int i, int j) {
+adjMatrix[i][j] = 1;
+}
+// Displays the adjacency matrix for the graph
+void displayAdjMatrix() {
+int i, j;
+printf("Adjacency matrix:\n");
+for (i = 0; i < numVertices; i++) {
+for (j = 0; j < numVertices; j++) {
+printf("%d ", adjMatrix[i][j]);
+}
+printf("\n");
+}
+}
+int main() {
+int numEdges, i, j, v1, v2;
+ Assignment 3: Graph as adjacency list
+printf("Enter the number of vertices: ");
+scanf("%d", &numVertices);
+initGraph(numVertices);
+printf("Enter the number of edges: ");
+scanf("%d", &numEdges);
+printf("Enter the edges as pairs of vertices (e.g. 1 2):\n");
+for (i = 0; i < numEdges; i++) {
+scanf("%d %d", &v1, &v2);
+addEdge(v1, v2);
+}
+displayAdjMatrix();
+return 0;
+}
+Output :
+Enter the number of vertices: 4
+Enter the number of edges: 5
+Enter the edges as pairs of vertices (e.g. 1 2):
+0 1
+1 2
+2 3
+3 0
+1 3
+Adjacency matrix:
+0 1 0 0
+0 0 1 1
+0 0 0 1
+1 0 0 0
+------------------------------------------------------------------------------------------
+B. Write a C program that accepts the vertices and edges of a graph and
+store it as an adjacency matrix. Implement functions to print indegree,
+outdegree and total degree of all vertices of graph.
+Ans: program that accepts the vertices and edges of a graph and stores it as an
+adjacency matrix. It also implements functions to print the indegree, outdegree,
+and total degree of all vertices of the graph:
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_VERTICES 100
+int adjMatrix[MAX_VERTICES][MAX_VERTICES];
+int numVertices;
+// Initialize the graph with the given number of vertices
+void initGraph(int n) {
+int i, j;
+numVertices = n;
+for (i = 0; i < numVertices; i++) {
+for (j = 0; j < numVertices; j++) {
+adjMatrix[i][j] = 0;
+}
+}
+}
+// Add a directed edge from vertex i to vertex j
+void addEdge(int i, int j) {
+adjMatrix[i][j] = 1;
+}
+// Displays the adjacency matrix for the graph
+void displayAdjMatrix() {
+int i, j;
+printf("Adjacency matrix:\n");
+for (i = 0; i < numVertices; i++) {
+for (j = 0; j < numVertices; j++) {
+printf("%d ", adjMatrix[i][j]);
+}
+printf("\n");
+}
+}
+// Returns the indegree of the given vertex
+int indegree(int vertex) {
+int i, in = 0;
+for (i = 0; i < numVertices; i++) {
+if (adjMatrix[i][vertex]) {
+in++;
+}
+}
+return in;
+}
+// Returns the outdegree of the given vertex
+int outdegree(int vertex) {
+int i, out = 0;
+for (i = 0; i < numVertices; i++) {
+if (adjMatrix[vertex][i]) {
+out++;
+}
+}
+return out;
+}
+// Returns the total degree of the given vertex
+int degree(int vertex) {
+return indegree(vertex) + outdegree(vertex);
+}
+// Displays the indegree, outdegree, and total degree of all
+vertices
+void displayDegree() {
+int i;
+printf("Vertex\tIndegree\tOutdegree\tTotal degree\n");
+for (i = 0; i < numVertices; i++) {
+printf("%d\t%d\t\t%d\t\t%d\n", i, indegree(i), outdegree(i),
+degree(i));
+}
+}
+int main() {
+int numEdges, i, v1, v2;
+printf("Enter the number of vertices: ");
+scanf("%d", &numVertices);
+initGraph(numVertices);
+printf("Enter the number of edges: ");
+scanf("%d", &numEdges);
+printf("Enter the edges as pairs of vertices (e.g. 1 2):\n");
+for (i = 0; i < numEdges; i++) {
+scanf("%d %d", &v1, &v2);
+addEdge(v1, v2);
+}
+displayAdjMatrix();
+displayDegree();
+return 0;
+}
+Output:
+Enter the number of vertices: 2
+Enter the number of edges: 3
+Enter the edges as pairs of vertices (e.g. 1 2):
+3 5
+2 3
+5 6
+Adjacency matrix:
+0 0
+0 0
+Vertex Indegree Outdegree Total degree
+0 0 0 0 0 0
+1 0 0 0 0 0
+Set B
+A.Write a C program that accepts the vertices and edges of a
+graph and store it as an adjacency matrix. Implement function
+to traverse the graph using Breadth First Search (BFS)
+traversal.
+Ans: C program that accepts the vertices and edges of a graph and stores it
+as an adjacency matrix. It also implements a function to traverse the graph
+using Breadth First Search (BFS) traversal:
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_VERTICES 100
+Int adjMatrix[MAX_VERTICES] [MAX_VERTICES];
+int visited[MAX_VERTICES];
+int queue[MAX_VERTICES];
+int numVertices;
+// Initialize the graph with the given number of vertices
+void initGraph(int n) {
+int i, j;
+numVertices = n;
+for (i = 0; i < numVertices; i++) {
+for (j = 0; j < numVertices; j++) {
+adjMatrix[i][j] = 0;
+}
+}
+}
+// Add a directed edge from vertex i to vertex j
+void addEdge(int i, int j) {
+adjMatrix[i][j] = 1;
+}
+// Breadth First Search (BFS) traversal of the graph
+void bfs(int start) {
+int i, front = 0, rear = 0;
+for (i = 0; i < numVertices; i++) {
+visited[i] = 0;
+}
+visited[start] = 1;
+queue[rear++] = start;
+printf("BFS traversal: ");
+while (front != rear) {
+int current = queue[front++];
+printf("%d ", current);
+for (i = 0; i < numVertices; i++) {
+if (adjMatrix[current][i] && !visited[i]) {
+visited[i] = 1;
+queue[rear++] = i;
+}
+}
+}
+printf("\n");
+}
+int main() {
+int numEdges, i, v1, v2, start;
+printf("Enter the number of vertices: ");
+scanf("%d", &numVertices);
+initGraph(numVertices);
+printf("Enter the number of edges: ");
+scanf("%d", &numEdges);
+printf("Enter the edges as pairs of vertices (e.g. 1 2):\n");
+for (i = 0; i < numEdges; i++) {
+scanf("%d %d", &v1, &v2);
+addEdge(v1, v2);
+}
+printf("Enter the starting vertex for BFS traversal: ");
+scanf("%d", &start);
+bfs(start);
+return 0;
+}
+Output:
+Enter the number of vertices: 5
+Enter the number of edges: 6
+Enter the edges as pairs of vertices (e.g. 1 2):
+0 1
+0 2
+1 3
+2 3
+3 4
+4 0
+BFS traversal: 0 1 2 3 4
+B. write a C program that accepts the vertices and edges of a graph and store
+it as an adjacency matrix. Implement function to traverse the graph using
+Depth First Search (BFS) traversal.
+Ans: C program that accepts the vertices and edges of a graph and stores it
+as an adjacency
+matrix. It also implements a function to traverse the graph using Depth First
+Search (DFS) traversal:
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_VERTICES 100
+int adjMatrix[MAX_VERTICES][MAX_VERTICES];
+int visited[MAX_VERTICES];
+int numVertices;
+// Initialize the graph with the given number of vertices
+void initGraph(int n) {
+int i, j;
+numVertices = n;
+for (i = 0; i < numVertices; i++) {
+for (j = 0; j < numVertices; j++) {
+adjMatrix[i][j] = 0;
+}
+}
+}
+// Add a directed edge from vertex i to vertex j
+void addEdge(int i, int j) {
+adjMatrix[i][j] = 1;
+}
+// Depth First Search (DFS) traversal of the graph
+void dfs(int start) {
+int i;
+visited[start] = 1;
+printf("%d ", start);
+for (i = 0; i < numVertices; i++) {
+if (adjMatrix[start][i] && !visited[i]) {
+dfs(i);
+}
+}
+}
+int main() {
+int numEdges, i, v1, v2, start;
+printf("Enter the number of vertices: ");
+scanf("%d", &numVertices);
+initGraph(numVertices);
+printf("Enter the number of edges: ");
+scanf("%d", &numEdges);
+printf("Enter the edges as pairs of vertices (e.g. 1 2):\n");
+for (i = 0; i < numEdges; i++) {
+scanf("%d %d", &v1, &v2);
+addEdge(v1, v2);
+}
+printf("Enter the starting vertex for DFS traversal: ");
+scanf("%d", &start);
+printf("DFS traversal: ");
+for (i = 0; i < numVertices; i++) {
+visited[i] = 0;
+}
+dfs(start);
+printf("\n");
+return 0;
+}
+Output:
+Enter the number of vertices: 5
+Enter the number of edges: 6
+Enter the edges as pairs of vertices (e.g. 1 2):
+0 1
+0 2
+1 3
+2 3
+3 4
+4 0
+Enter the starting vertex for DFS traversal: 0
+DFS traversal: 0 1 3 4 2
+-------------------------------------------------------------
+Set C
+A. Which data structure is used to implement Breadth First Search?
+Ans: Breadth First Search (BFS) is typically implemented using a queue
+data structure. The basic idea is to start from a source vertex and visit all
+vertices in the graph in breadth-first order, meaning that we visit all the
+vertices at distance 1 from the source, then all the vertices at distance 2,
+and so on, until all vertices have been visited.
+B. Where the new node is appended in Depth first search of OPEN list?
+Ans: In Depth First Search (DFS), there is no concept of an OPEN list, as there is
+in some other search algorithms like Breadth First Search (BFS) or A* search. DFS
+traverses the graph by exploring one path as far as possible before backtracking
+and exploring other paths. As the algorithm visits each node, it marks the node
+as visited and recursively visits all of its unvisited neighbors
+C. What is simple graph?
+Ans: A simple graph in C is a graph data structure that consists of a set of
+vertices and edges. It is called "simple" because it has no self-loops or multiple
+edges
+D.Which data structure is used to implement adjacency matrix method?
+Ans: The data structure used to implement the adjacency matrix method is a
+two-dimensional array.
 
+
+
+Assignment 4
 
